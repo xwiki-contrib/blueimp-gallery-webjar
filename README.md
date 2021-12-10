@@ -1,2 +1,2 @@
-# blueimp-gallery-webjar
-WebJar packaging for [Blueimp Gallery](https://github.com/blueimp/Gallery).
+# Blueimp Gallery Webjar
+WebJar packaging for [blueimp Gallery](https://github.com/blueimp/Gallery) lightbox library.

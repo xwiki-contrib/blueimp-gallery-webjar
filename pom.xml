@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * See the NOTICE file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.xwiki.contrib</groupId>
+    <artifactId>parent-commons</artifactId>
+    <version>13.10</version>
+  </parent>
+  <packaging>jar</packaging>
+  <artifactId>blueimp-gallery-webjar</artifactId>
+  <version>3.4.0-SNAPSHOT</version>
+  <name>Blueimp Gallery WebJar</name>
+  <description>Provides WebJar packaging for the blueimp Gallery lightbox library.</description>
+  <url>https://github.com/blueimp/Gallery</url>
+  <properties>
+    <upstream.artifactId>blueimp-gallery</upstream.artifactId>
+    <upstream.version>3.4.0</upstream.version>
+    <upstream.url>https://registry.npmjs.org/${upstream.artifactId}/-/${upstream.artifactId}-${upstream.version}.tgz</upstream.url>
+    <extractDir>${project.build.directory}/package</extractDir>
+    <webjar.contentDirectory>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</webjar.contentDirectory>
+  </properties>
+  <developers>
+    <!-- Only for the packaging. The Gallery code is developed by blueimp. -->
+    <developer>
+      <id>oanalavinia</id>
+      <name>Oana-Lavinia Florean</name>
+    </developer>
+  </developers>
+  <scm>
+    <url>http://github.com/xwiki-contrib/${project.artifactId}</url>
+    <connection>scm:git:git://github.com/xwiki-contrib/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:git@github.com:xwiki-contrib/${project.artifactId}.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.googlecode.maven-download-plugin</groupId>
+        <artifactId>download-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <executions>
+          <execution>
+            <id>download-gallery-sources</id>
+            <goals>
+              <goal>wget</goal>
+            </goals>
+            <configuration>
+              <url>${upstream.url}</url>
+              <unpack>true</unpack>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <version>1.5.3</version>
+        <!-- We need to make sure that there aren't multiple anonymous modules in the resulted bundle. -->
+        <executions>
+          <execution>
+            <id>fix-gallery</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-gallery.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(\['\./blueimp-helper'</token>
+                  <value>define\('blueimp-gallery', \['blueimp-helper'</value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+          <execution>
+            <id>fix-helper</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-helper.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(</token>
+                  <value>define\('blueimp-helper',</value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+          <execution>
+            <id>fix-gallery-fullscreen</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-gallery-fullscreen.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(\['\./blueimp-helper', '\./blueimp-gallery'</token>
+                  <value>define\('blueimp-gallery-fullscreen', \['blueimp-helper', 'blueimp-gallery' </value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+          <execution>
+            <id>fix-gallery-indicator</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-gallery-indicator.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(\['\./blueimp-helper', '\./blueimp-gallery'</token>
+                  <value>define\('blueimp-gallery-indicator', \['blueimp-helper', 'blueimp-gallery' </value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+          <execution>
+            <id>fix-gallery-video</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-gallery-video.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(\['\./blueimp-helper', '\./blueimp-gallery'</token>
+                  <value>define\('blueimp-gallery-video', \['blueimp-helper', 'blueimp-gallery' </value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+          <execution>
+            <id>fix-gallery-vimeo</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-gallery-vimeo.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(\['\./blueimp-helper', '\./blueimp-gallery-video'</token>
+                  <value>define\('blueimp-gallery-vimeo', \['blueimp-helper', 'blueimp-gallery-video' </value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+          <execution>
+            <id>fix-gallery-youtube</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+            <configuration>
+              <file>${extractDir}/js/blueimp-gallery-youtube.js</file>
+              <replacements>
+                <replacement>
+                  <token>define\(\['\./blueimp-helper', '\./blueimp-gallery-video'</token>
+                  <value>define\('blueimp-gallery-youtube', \['blueimp-helper', 'blueimp-gallery-video' </value>
+                </replacement>
+              </replacements>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.github.blutorange</groupId>
+        <artifactId>closure-compiler-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>minify-js</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>minify</goal>
+            </goals>
+            <configuration>
+              <baseSourceDir>${extractDir}</baseSourceDir>
+              <baseTargetDir>${extractDir}</baseTargetDir>
+              <sourceDir>js</sourceDir>
+              <targetDir>js</targetDir>
+              <skipMerge>false</skipMerge>
+              <!-- There's no configuration option to keep the unminified aggregated file so we include its source
+                in the generated source map file.  -->
+              <closureIncludeSourcesContent>true</closureIncludeSourcesContent>
+              <outputFilename>blueimp-gallery-bundle.min.js</outputFilename>
+              <includes>
+                <include>blueimp-helper.js</include>
+                <include>blueimp-gallery.js</include>
+                <include>blueimp-gallery-fullscreen.js</include>
+                <include>blueimp-gallery-indicator.js</include>
+                <include>blueimp-gallery-video.js</include>
+                <include>blueimp-gallery-vimeo.js</include>
+                <include>blueimp-gallery-youtube.js</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-webjar-resources</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${webjar.contentDirectory}</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${extractDir}</directory>
+                  <excludes>
+                    <exclude>package.json</exclude>
+                  </excludes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
