@@ -26,7 +26,7 @@
     <version>13.10</version>
   </parent>
   <packaging>jar</packaging>
-  <artifactId>blueimp-gallery-webjar</artifactId>
+  <artifactId>webjar-blueimp-gallery</artifactId>
   <version>3.4.0-SNAPSHOT</version>
   <name>Blueimp Gallery WebJar</name>
   <description>Provides WebJar packaging for the blueimp Gallery lightbox library.</description>
