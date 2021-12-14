@@ -27,7 +27,7 @@
   </parent>
   <packaging>jar</packaging>
   <artifactId>webjar-blueimp-gallery</artifactId>
-  <version>3.4.0</version>
+  <version>3.5.0-SNAPSHOT</version>
   <name>Blueimp Gallery WebJar</name>
   <description>Provides WebJar packaging for the blueimp Gallery lightbox library.</description>
   <url>https://github.com/blueimp/Gallery</url>
@@ -49,7 +49,7 @@
     <url>http://github.com/xwiki-contrib/${project.artifactId}</url>
     <connection>scm:git:git://github.com/xwiki-contrib/${project.artifactId}.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/${project.artifactId}.git</developerConnection>
-    <tag>webjar-blueimp-gallery-3.4.0</tag>
+    <tag>HEAD</tag>
   </scm>
   <build>
     <plugins>
